@@ -31,7 +31,6 @@ def calculate_percent_composition_elemental(
     compound_mass = 0.0
     for elem, num in compound.items():
         compound_mass += element(elem).mass * num
-    target_element_mass = element(element_id).mass
     return (number_of_moles * element(element_id).mass / compound_mass) * 100
 
 
