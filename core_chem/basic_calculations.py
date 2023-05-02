@@ -12,7 +12,9 @@ def get_density(mass: float, volume: float) -> float:
     return density
 
 
-def calculate_percent_composition_elemental(number_of_moles: int, element_id: str, compound: dict) -> float:
+def calculate_percent_composition_elemental(
+    number_of_moles: int, element_id: str, compound: dict
+) -> float:
     """Calculates the percent composition of an element =
 
 
@@ -28,7 +30,7 @@ def calculate_percent_composition_elemental(number_of_moles: int, element_id: st
     # compound_elements = element(compound_ids)
     compound_mass = 0.0
     for elem, num in compound.items():
-        compound_mass += (element(elem).mass * num)
+        compound_mass += element(elem).mass * num
     target_element_mass = element(element_id).mass
     return (number_of_moles * element(element_id).mass / compound_mass) * 100
 
@@ -54,8 +56,12 @@ def calculate_molarity(moles_of_solute: int, liters_of_solute: float) -> float:
     return moles_of_solute / liters_of_solute
 
 
-def calculate_substance_dilution(molarity_of_starting_solution=None, volume_of_starting_solution_liter=None,
-                                 molarity_of_end_solution=None, volume_of_end_solution_liter=None) -> float:
+def calculate_substance_dilution(
+    molarity_of_starting_solution=None,
+    volume_of_starting_solution_liter=None,
+    molarity_of_end_solution=None,
+    volume_of_end_solution_liter=None,
+) -> float:
     """Calculates the dilution of a substance.
 
     :param molarity_of_starting_solution: value in Moles
@@ -65,28 +71,36 @@ def calculate_substance_dilution(molarity_of_starting_solution=None, volume_of_s
     :return: substance dilution
     """
 
-    if sum(i is not None for i in [molarity_of_starting_solution,
-                                   volume_of_starting_solution_liter,
-                                   molarity_of_end_solution,
-                                   volume_of_end_solution_liter]) == 1:
-        raise ValueError('Only one optional input can be None')
+    if (
+        sum(
+            i is not None
+            for i in [
+                molarity_of_starting_solution,
+                volume_of_starting_solution_liter,
+                molarity_of_end_solution,
+                volume_of_end_solution_liter,
+            ]
+        )
+        == 1
+    ):
+        raise ValueError("Only one optional input can be None")
 
     if molarity_of_starting_solution is None:
         substance_dilution = (
-                (molarity_of_end_solution * volume_of_end_solution_liter) / volume_of_starting_solution_liter
-        )
+            molarity_of_end_solution * volume_of_end_solution_liter
+        ) / volume_of_starting_solution_liter
     elif volume_of_starting_solution_liter is None:
         substance_dilution = (
-                (molarity_of_end_solution * volume_of_end_solution_liter) / molarity_of_starting_solution
-        )
+            molarity_of_end_solution * volume_of_end_solution_liter
+        ) / molarity_of_starting_solution
     elif molarity_of_end_solution is None:
-        substance_dilution = (
-                volume_of_end_solution_liter / (molarity_of_starting_solution * volume_of_starting_solution_liter)
+        substance_dilution = volume_of_end_solution_liter / (
+            molarity_of_starting_solution * volume_of_starting_solution_liter
         )
     elif volume_of_end_solution_liter is None:
-        substance_dilution = (
-                molarity_of_end_solution / (molarity_of_starting_solution * volume_of_starting_solution_liter)
+        substance_dilution = molarity_of_end_solution / (
+            molarity_of_starting_solution * volume_of_starting_solution_liter
         )
     else:
-        raise ValueError('At least one value should be None for this calculation')
+        raise ValueError("At least one value should be None for this calculation")
     return substance_dilution
