@@ -18,8 +18,8 @@ def main():
     print(calculate_percent_yield(actual_yield=0.434, theoretical_yield=0.6345))
     print(calculate_molarity(moles_of_solute=1, liters_of_solute=12.1))
     print(calculate_substance_dilution(molarity_of_starting_solution=5,
-                                            molarity_of_end_solution=1,
-                                            volume_of_end_solution_liter=1))
+                                       molarity_of_end_solution=1,
+                                       volume_of_end_solution_liter=1))
     print(calculate_boyles_law(pressure_one=100.000, volume_one=80.02, pressure_two=None, volume_two=20.1))
     print(get_sig_figures([1.999, 1.09]))
 
