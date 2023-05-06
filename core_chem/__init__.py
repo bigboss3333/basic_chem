@@ -1,4 +1,12 @@
-def get_sig_figures(values):
+"""Core calculations for basic chemistry applications"""
+
+
+def get_sig_figures(values: float) -> int:
+    """Returns the number of significant figures in a float
+
+    :param values:
+    :return: Returns the number of significant figures in a float
+    """
     figures = 10000
     for value in values:
         if value is None:

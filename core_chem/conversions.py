@@ -1,3 +1,6 @@
+"""Chemistry Conversion Functions"""
+
+
 def convert_fahrenheit_to_celsius(degrees_in_fahrenheit: float) -> float:
     """Converts from Fahrenheit to Celsius
 
@@ -17,4 +20,9 @@ def convert_celsius_to_fahrenheit(degrees_in_celsius: float) -> float:
 
 
 def convert_celsius_to_kelvins(celsius: float) -> float:
+    """Converts from celsius to kelvins
+
+    :param celsius: degrees in celsius
+    :return: degrees in kelvins
+    """
     return celsius + 273.15

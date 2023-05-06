@@ -1,3 +1,4 @@
+"""Main for core_chem"""
 from core_chem import get_sig_figures
 from core_chem.basic_calculations import (
     get_density,
@@ -15,6 +16,7 @@ from core_chem.conversions import (
 
 
 def main():
+    """Main function"""
     print(get_density(mass=0.123, volume=12.0))
     celsius = convert_fahrenheit_to_celsius(degrees_in_fahrenheit=32.0)
     print(convert_celsius_to_fahrenheit(celsius))
