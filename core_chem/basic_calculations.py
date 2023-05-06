@@ -1,6 +1,8 @@
 """Basic Chemistry Calculations"""
 from mendeleev import element
 
+from core_chem import AVAGADROS_NUMBER
+
 
 def get_density(mass: float, volume: float) -> float:
     """Given the mass of an object returns the density
@@ -11,6 +13,15 @@ def get_density(mass: float, volume: float) -> float:
     """
     density = mass / volume
     return density
+
+
+def get_occupied_volume(mass: float, density: float) -> float:
+    """Given the mass of an object and density returns the volume displaced
+
+    :param mass: mass of object
+    :param density: density of object to calculate volume displaced    :return:  by object
+    """
+    return density * mass
 
 
 def calculate_percent_composition_elemental(
@@ -37,13 +48,46 @@ def calculate_mass_elemental_compound(number_of_moles: int, compound: dict) -> f
 
     :param compound: Dictionary of isotopes in a compound element:number_of_element
     :param number_of_moles: the number of moles of the element in one mole of the compound
-    :return: percent composition
+    :return: mass in grams
     """
 
     compound_mass = 0.0
     for elem, num in compound.items():
         compound_mass += element(elem).mass * num
     return compound_mass * number_of_moles
+
+
+def calculate_moles_of_compound_from_mass(mass: float, compound: dict):
+    """calculate moles of compound from mass
+
+    :param mass: mass in grams
+    :param compound: The elemental compound
+    :return: moles of compound
+    """
+    return mass / calculate_mass_elemental_compound(1, compound)
+
+
+def calculate_atoms_of_compound_from_mass(mass: float, compound: dict):
+    """calculate atoms of compound from mass
+
+    :param mass: mass in grams
+    :param compound: The elemental compound
+    :return: moles of compound
+    """
+    moles_of_compound = mass / calculate_mass_elemental_compound(1, compound)
+
+    return moles_of_compound * AVAGADROS_NUMBER
+
+
+def calculate_moles_of_compound_from_molecules(molecules: float, compound: dict):
+    """calculate atoms of compound from mass
+
+    :param molecules: molecules
+    :param compound: The elemental compound
+    :return: moles of compound
+    """
+    moles = molecules / AVAGADROS_NUMBER
+    return calculate_mass_elemental_compound(moles, compound)
 
 
 def calculate_percent_yield(actual_yield, theoretical_yield):

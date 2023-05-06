@@ -1,6 +1,7 @@
 """Test suit for basic calculations"""
 from unittest import TestCase
 
+from core_chem import get_sig_figures
 from core_chem.basic_calculations import (
     calculate_substance_dilution,
     calculate_molarity,
@@ -71,6 +72,7 @@ class TestBasicCalculation(TestCase):
         self.assertEqual(result, 100.0)
 
     def test_calculate_mass_elemental_compound(self):
+        """test_calculate_mass_elemental_compound"""
         glucose = {"C": 6, "H": 12, "O": 6}
         # Calculate 1 moles of glucose
         mass = calculate_mass_elemental_compound(1, glucose)
@@ -78,3 +80,38 @@ class TestBasicCalculation(TestCase):
         # Calculate 2 moles of glucose
         mass = calculate_mass_elemental_compound(2, glucose)
         self.assertEqual(mass, 360.312)
+
+    def test_significant_figure(self):
+        """Test number of significant figures"""
+
+        # *True significant figure examples*
+        # Significant if non zero
+        self.assertEqual(get_sig_figures([4.5]), 2)
+        self.assertEqual(get_sig_figures([122.35]), 5)
+        # One or more zeros between non zero digits
+        self.assertEqual(get_sig_figures([205]), 3)
+        self.assertEqual(get_sig_figures([5.008]), 4)
+        # One or more zeros at the end of a decimal number
+
+        # 50. Needs to be a string because python would add 0 after . making it 50.0
+        self.assertEqual(get_sig_figures(["50."]), 2)
+        self.assertEqual(get_sig_figures([25.0]), 3)
+
+        # For trailing 0 that are considered significant you must use
+        #   a string or format with "%.2f"
+        test = "%.2f" % 16.00
+        self.assertEqual(get_sig_figures([test]), 4)
+
+        # *Non-Significant figure examples*
+
+        # Zeros at teh beginning of a decimal number
+        self.assertEqual(get_sig_figures([0.0004]), 1)
+        self.assertEqual(get_sig_figures([0.075]), 2)
+        self.assertEqual(get_sig_figures([850000]), 2)
+        self.assertEqual(get_sig_figures([1250000]), 3)
+        sig_figs = get_sig_figures([1250000, "50."])
+        formatted_results = format(125.01 + 50.0, f".{sig_figs}g")
+        self.assertEqual("1.8e+02", formatted_results)
+        self.assertEqual(get_sig_figures([1250000, "50."]), 2)
+        # Very large numbers need to be strings because python converts to scientific notation
+        self.assertEqual(get_sig_figures(["0.0000002501"]), 4)

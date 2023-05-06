@@ -26,3 +26,21 @@ def convert_celsius_to_kelvins(celsius: float) -> float:
     :return: degrees in kelvins
     """
     return celsius + 273.15
+
+
+def convert_nanometer_to_picometer(nanometer):
+    """Converts nanometers to picometers by multiplying by 1000
+
+    :param nanometer:
+    :return: picometer
+    """
+    return nanometer * 1000
+
+
+def convert_kilogram_to_milligram(kilogram):
+    """convert kilogram to milligram
+
+    :param kilogram:
+    :return: milligram
+    """
+    return kilogram * 1000000
