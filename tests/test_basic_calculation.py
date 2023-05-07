@@ -8,6 +8,10 @@ from core_chem.basic_calculations import (
     calculate_percent_yield,
     calculate_percent_composition_elemental,
     calculate_mass_elemental_compound,
+    calculate_atoms_of_compound_from_mass,
+    calculate_moles_of_compound_from_mass,
+    get_occupied_volume,
+    calculate_moles_of_compound_from_molecules,
 )
 
 
@@ -72,7 +76,7 @@ class TestBasicCalculation(TestCase):
         self.assertEqual(result, 100.0)
 
     def test_calculate_mass_elemental_compound(self):
-        """test_calculate_mass_elemental_compound"""
+        """test calculate mass elemental compound"""
         glucose = {"C": 6, "H": 12, "O": 6}
         # Calculate 1 moles of glucose
         mass = calculate_mass_elemental_compound(1, glucose)
@@ -80,6 +84,39 @@ class TestBasicCalculation(TestCase):
         # Calculate 2 moles of glucose
         mass = calculate_mass_elemental_compound(2, glucose)
         self.assertEqual(mass, 360.312)
+
+    def test_calculate_atoms_of_compound_from_mass(self):
+        """test calculate atoms of compound from mass"""
+        self.assertEqual(
+            6.018225904049415e23, calculate_atoms_of_compound_from_mass(4.0, {"He": 1})
+        )
+
+    def test_get_occupied_volume(self):
+        """test get occupied volume"""
+        self.assertEqual(get_occupied_volume(10.0, 10.0), 100)
+
+    def test_calculate_moles_of_compound_from_mass(self):
+        """test calculate moles of compound from mass"""
+        self.assertEqual(
+            calculate_moles_of_compound_from_mass(12.1, {"C": 1}), 1.0074098742819082
+        )
+
+    def test_calculate_moles_of_compound_from_molecules(self):
+        """Calculate the number of moles from molecules"""
+        self.assertEqual(
+            calculate_moles_of_compound_from_molecules(1000000, {"C": 1}),
+            1.9944734735825072e-17,
+        )
+
+    def test_calculate_substance_dilution_all_none(self):
+        """Test with multiple parameters set to None"""
+        with self.assertRaises(ValueError):
+            calculate_substance_dilution(None, None, 1, 12.1)
+
+    def test_calculate_substance_dilution_all_values(self):
+        """Test with multiple parameters set to None"""
+        with self.assertRaises(ValueError):
+            calculate_substance_dilution(1, 1, 1, 12.1)
 
     def test_significant_figure(self):
         """Test number of significant figures"""
@@ -98,9 +135,8 @@ class TestBasicCalculation(TestCase):
         self.assertEqual(get_sig_figures([25.0]), 3)
 
         # For trailing 0 that are considered significant you must use
-        #   a string or format with "%.2f"
-        test = "%.2f" % 16.00
-        self.assertEqual(get_sig_figures([test]), 4)
+        #   a string.
+        self.assertEqual(get_sig_figures(["16.00"]), 4)
 
         # *Non-Significant figure examples*
 

@@ -132,9 +132,9 @@ def calculate_substance_dilution(
         molarity_of_end_solution,
         volume_of_end_solution_liter,
     ]
-    if sum(i is not None for i in params) == 1:
+    if len([i for i in params if i is None]) != 1:
         raise ValueError("Only one optional input can be None")
-
+    substance_dilution = None
     if molarity_of_starting_solution is None:
         substance_dilution = (
             molarity_of_end_solution * volume_of_end_solution_liter
@@ -151,6 +151,4 @@ def calculate_substance_dilution(
         substance_dilution = molarity_of_end_solution / (
             molarity_of_starting_solution * volume_of_starting_solution_liter
         )
-    else:
-        raise ValueError("At least one value should be None for this calculation")
     return substance_dilution

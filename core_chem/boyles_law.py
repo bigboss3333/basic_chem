@@ -14,11 +14,10 @@ def calculate_boyles_law(
     :param volume_two: Subsequent volume
     :return: Unknown value
     """
-    if (
-        sum(i is not None for i in [pressure_one, volume_one, pressure_two, volume_two])
-        == 1
-    ):
+    params = [pressure_one, volume_one, pressure_two, volume_two]
+    if len([i for i in params if i is None]) != 1:
         raise ValueError("Only one optional input can be None")
+    result = None
     if pressure_one is None:
         result = (pressure_two * volume_two) / volume_one
     elif volume_one is None:
@@ -27,6 +26,4 @@ def calculate_boyles_law(
         result = (pressure_one * volume_one) / volume_two
     elif volume_two is None:
         result = (pressure_one * volume_one) / pressure_two
-    else:
-        raise ValueError("At least one value should be None for this calculation")
     return result

@@ -12,6 +12,8 @@ from core_chem.conversions import (
     convert_fahrenheit_to_celsius,
     convert_celsius_to_fahrenheit,
     convert_celsius_to_kelvins,
+    convert_nanometer_to_picometer,
+    convert_kilogram_to_milligram,
 )
 
 
@@ -44,6 +46,8 @@ def main():
         )
     )
     print(get_sig_figures([1.999, 1.09]))
+    print(convert_nanometer_to_picometer(100))
+    print(convert_kilogram_to_milligram(0.0000001))
 
 
 if __name__ == "__main__":
