@@ -10,7 +10,7 @@ pipeline {
         stage('Test') {
             steps {
                 echo 'Testing..'
-                bash bin/run_coverage.sh
+                bin/run_coverage.sh
             }
         }
         stage('Deploy') {
