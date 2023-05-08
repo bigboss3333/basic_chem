@@ -1,4 +1,7 @@
+"""Basic Chemistry Calculations"""
 from mendeleev import element
+
+from core_chem import AVAGADROS_NUMBER
 
 
 def get_density(mass: float, volume: float) -> float:
@@ -12,10 +15,19 @@ def get_density(mass: float, volume: float) -> float:
     return density
 
 
+def get_occupied_volume(mass: float, density: float) -> float:
+    """Given the mass of an object and density returns the volume displaced
+
+    :param mass: mass of object
+    :param density: density of object to calculate volume displaced    :return:  by object
+    """
+    return density * mass
+
+
 def calculate_percent_composition_elemental(
     number_of_moles: int, element_id: str, compound: dict
 ) -> float:
-    """Calculates the percent composition of an element =
+    """Calculates the percent composition of an element
 
 
     :param compound: Dictionary of isotopes in a compound element:number_of_element
@@ -24,21 +36,66 @@ def calculate_percent_composition_elemental(
     :return: percent composition
     """
 
-    # test2 = compound.items()
-    # test1=compound.values()
-    # compound_ids = compound.keys()
-    # compound_elements = element(compound_ids)
     compound_mass = 0.0
     for elem, num in compound.items():
         compound_mass += element(elem).mass * num
     return (number_of_moles * element(element_id).mass / compound_mass) * 100
 
 
+def calculate_mass_elemental_compound(number_of_moles: int, compound: dict) -> float:
+    """Calculates the mass of an elemental compound.
+
+
+    :param compound: Dictionary of isotopes in a compound element:number_of_element
+    :param number_of_moles: the number of moles of the element in one mole of the compound
+    :return: mass in grams
+    """
+
+    compound_mass = 0.0
+    for elem, num in compound.items():
+        compound_mass += element(elem).mass * num
+    return compound_mass * number_of_moles
+
+
+def calculate_moles_of_compound_from_mass(mass: float, compound: dict):
+    """calculate moles of compound from mass
+
+    :param mass: mass in grams
+    :param compound: The elemental compound
+    :return: moles of compound
+    """
+    return mass / calculate_mass_elemental_compound(1, compound)
+
+
+def calculate_atoms_of_compound_from_mass(mass: float, compound: dict):
+    """calculate atoms of compound from mass
+
+    :param mass: mass in grams
+    :param compound: The elemental compound
+    :return: moles of compound
+    """
+    moles_of_compound = mass / calculate_mass_elemental_compound(1, compound)
+
+    return moles_of_compound * AVAGADROS_NUMBER
+
+
+def calculate_moles_of_compound_from_molecules(molecules: float, compound: dict):
+    """calculate atoms of compound from mass
+
+    :param molecules: molecules
+    :param compound: The elemental compound
+    :return: moles of compound
+    """
+    moles = molecules / AVAGADROS_NUMBER
+    return calculate_mass_elemental_compound(moles, compound)
+
+
 def calculate_percent_yield(actual_yield, theoretical_yield):
     """Calculates the percent yield of a reaction
 
     :param actual_yield: quantity of a product that is obtained from a chemical reaction
-    :param theoretical_yield: quantity of a product obtained from the complete conversion of the limiting
+    :param theoretical_yield: quantity of a product obtained from the complete
+           conversion of the limiting
     reactant in a chemical reaction
     :return: percent yield of reaction
     """
@@ -69,21 +126,15 @@ def calculate_substance_dilution(
     :param volume_of_end_solution_liter: value in liters
     :return: substance dilution
     """
-
-    if (
-        sum(
-            i is not None
-            for i in [
-                molarity_of_starting_solution,
-                volume_of_starting_solution_liter,
-                molarity_of_end_solution,
-                volume_of_end_solution_liter,
-            ]
-        )
-        == 1
-    ):
+    params = [
+        molarity_of_starting_solution,
+        volume_of_starting_solution_liter,
+        molarity_of_end_solution,
+        volume_of_end_solution_liter,
+    ]
+    if len([i for i in params if i is None]) != 1:
         raise ValueError("Only one optional input can be None")
-
+    substance_dilution = None
     if molarity_of_starting_solution is None:
         substance_dilution = (
             molarity_of_end_solution * volume_of_end_solution_liter
@@ -100,6 +151,4 @@ def calculate_substance_dilution(
         substance_dilution = molarity_of_end_solution / (
             molarity_of_starting_solution * volume_of_starting_solution_liter
         )
-    else:
-        raise ValueError("At least one value should be None for this calculation")
     return substance_dilution
