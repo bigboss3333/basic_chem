@@ -10,7 +10,9 @@ pipeline {
         stage('Test') {
             steps {
                 echo 'Testing..'
-                sh bin/run_coverage.sh
+                pylint core_chem tests
+                coverage run --source=. -m unittest discover ./tests/
+                coverage report
             }
         }
         stage('Deploy') {
