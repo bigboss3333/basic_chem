@@ -10,7 +10,7 @@ pipeline {
         stage('Test') {
             steps {
                 echo 'Testing..'
-                sh '/root/basic_chem/bin/run_coverage.sh'
+                sh 'pylint core_chem tests'
             }
         }
         stage('Deploy') {
