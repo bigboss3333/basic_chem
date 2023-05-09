@@ -12,6 +12,7 @@ from core_chem.basic_calculations import (
     calculate_moles_of_compound_from_mass,
     get_occupied_volume,
     calculate_moles_of_compound_from_molecules,
+    get_density,
 )
 
 
@@ -117,6 +118,10 @@ class TestBasicCalculation(TestCase):
         """Test with multiple parameters set to None"""
         with self.assertRaises(ValueError):
             calculate_substance_dilution(1, 1, 1, 12.1)
+
+    def test_get_density(self):
+        test = get_density(mass=0.123, volume=12.0)
+        self.assertEqual(0.0103, test)
 
     def test_significant_figure(self):
         """Test number of significant figures"""

@@ -37,6 +37,16 @@ def get_sig_figures(values: list[Any]) -> int:
     return min(fig_list)
 
 
+def round_to_sig_figs(value_to_round: float, number_sig_figs: int) -> float:
+    """Rounds a value to a specific number of significant figures
+
+    :param value_to_round: Input value that needs to be rounded
+    :param number_sig_figs:  Number of significant figures to which to round
+    :return: rounded value to a specified sig fig
+    """
+    return float(format(value_to_round, f".{number_sig_figs}g"))
+
+
 def remove_leading_zeros(less_than_one_figure_list) -> list:
     """removes leading zeros from a list of figures
         i.e. [0,0,0,0,0,0,0,1,2,0,0,3,4]

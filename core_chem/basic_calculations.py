@@ -1,7 +1,7 @@
 """Basic Chemistry Calculations"""
 from mendeleev import element
 
-from core_chem import AVAGADROS_NUMBER
+from core_chem import AVAGADROS_NUMBER, get_sig_figures, round_to_sig_figs
 
 
 def get_density(mass: float, volume: float) -> float:
@@ -12,7 +12,8 @@ def get_density(mass: float, volume: float) -> float:
     :return:  of object
     """
     density = mass / volume
-    return density
+    sig_figs = get_sig_figures([mass, volume])
+    return round_to_sig_figs(density, sig_figs)
 
 
 def get_occupied_volume(mass: float, density: float) -> float:
