@@ -120,6 +120,7 @@ class TestBasicCalculation(TestCase):
             calculate_substance_dilution(1, 1, 1, 12.1)
 
     def test_get_density(self):
+        """Tests get density"""
         test = get_density(mass=0.123, volume=12.0)
         self.assertEqual(0.0103, test)
 
